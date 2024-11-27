@@ -199,7 +199,11 @@ void Gobby::EditCommands::on_document_changed(SessionView* view)
 
 void Gobby::EditCommands::on_sync_complete()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
+
 	InfTextSession* session = m_current_view->get_session();
 
 	InfAdoptedAlgorithm* algorithm = inf_adopted_session_get_algorithm(
@@ -224,7 +228,10 @@ void Gobby::EditCommands::on_sync_complete()
 
 void Gobby::EditCommands::on_active_user_changed(InfUser* active_user)
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
 
 	if(active_user != NULL)
 	{
@@ -257,7 +264,11 @@ void Gobby::EditCommands::on_active_user_changed(InfUser* active_user)
 
 void Gobby::EditCommands::on_mark_set()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
+
 	GtkTextBuffer* buffer =
 		GTK_TEXT_BUFFER(m_current_view->get_text_buffer());
 
@@ -279,7 +290,11 @@ void Gobby::EditCommands::on_changed()
 void Gobby::EditCommands::on_can_undo_changed(InfAdoptedUser* user,
                                               bool can_undo)
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
+
 	if(INF_ADOPTED_USER(m_current_view->get_active_user()) == user)
 		m_header.action_edit_undo->set_sensitive(can_undo);
 }
@@ -287,7 +302,11 @@ void Gobby::EditCommands::on_can_undo_changed(InfAdoptedUser* user,
 void Gobby::EditCommands::on_can_redo_changed(InfAdoptedUser* user,
                                               bool can_redo)
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
+
 	if(INF_ADOPTED_USER(m_current_view->get_active_user()) == user)
 		m_header.action_edit_redo->set_sensitive(can_redo);
 }
@@ -347,7 +366,10 @@ namespace {
 
 void Gobby::EditCommands::on_undo()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
 
 	gulong i_ = g_signal_connect_after(m_current_view->get_text_buffer(), "insert-text", G_CALLBACK(recaret_i), NULL);
 	gulong e_ = g_signal_connect_after(m_current_view->get_text_buffer(), "delete-range", G_CALLBACK(recaret_e), NULL);
@@ -375,7 +397,10 @@ void Gobby::EditCommands::on_undo()
 
 void Gobby::EditCommands::on_redo()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
 
 	gulong i_ = g_signal_connect_after(m_current_view->get_text_buffer(), "insert-text", G_CALLBACK(recaret_i), NULL);
 	gulong e_ = g_signal_connect_after(m_current_view->get_text_buffer(), "delete-range", G_CALLBACK(recaret_e), NULL);
@@ -403,7 +428,11 @@ void Gobby::EditCommands::on_redo()
 
 void Gobby::EditCommands::on_cut()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
+
 	g_assert(m_current_view->get_active_user() != NULL);
 
 	gtk_text_buffer_cut_clipboard(
@@ -416,7 +445,10 @@ void Gobby::EditCommands::on_cut()
 
 void Gobby::EditCommands::on_copy()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
 
 	gtk_text_buffer_copy_clipboard(
 		GTK_TEXT_BUFFER(m_current_view->get_text_buffer()),
@@ -425,7 +457,11 @@ void Gobby::EditCommands::on_copy()
 
 void Gobby::EditCommands::on_paste()
 {
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
+
 	g_assert(m_current_view->get_active_user() != NULL);
 
 	gtk_text_buffer_paste_clipboard(
