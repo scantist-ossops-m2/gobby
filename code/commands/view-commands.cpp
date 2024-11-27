@@ -360,7 +360,10 @@ void Gobby::ViewCommands::on_menu_language_changed(
 	Glib::RefPtr<Header::LanguageAction> language_action =
 		Glib::RefPtr<Header::LanguageAction>::cast_static(action);
 
-	g_assert(m_current_view != NULL);
+	if (!m_current_view) {
+		g_warning("No current view exists.");
+		return;
+	}
 
 	m_document_language_changed_connection.block();
 	m_current_view->set_language(language_action->get_language());
